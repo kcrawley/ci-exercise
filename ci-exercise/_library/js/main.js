@@ -21,7 +21,7 @@ var campaign = {
                     break;
             }
 
-            $.get('/index.php/modal', { modalType: modalType, modalTitle: modalTitle, modalClient: modalClient },
+            $.get('/index.php/campaignmodal', { modalType: modalType, modalTitle: modalTitle, modalClient: modalClient },
                 function (data) {
                     $('#modal').html(data);
                 });
@@ -31,7 +31,7 @@ var campaign = {
         $(document).on('click', '#triggerSave', function () {
             var formData = $(document).find('form#modal-form').serialize();
 
-            $.post('/index.php/modal/save', formData, function (data) {
+            $.post('/index.php/campaignmodal/save', formData, function (data) {
                 if (data.status === true) {
                     campaign.reloadAndSetDropDown(data.id,
                         $(document).find('input.data-a').val(),
