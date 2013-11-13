@@ -1,0 +1,107 @@
+---
+vagrantfile-local:
+    vm:
+        box: debian-wheezy72-x64-vbox43
+        box_url: 'https://puphpet.s3.amazonaws.com/debian-wheezy72-x64-vbox43.box'
+        hostname: null
+        network:
+            private_network: 192.168.56.93
+            forwarded_port:
+                PLtUZCWdqjC8:
+                    host: ''
+                    guest: ''
+        provider:
+            virtualbox:
+                modifyvm:
+                    name: ci-exercise
+                    natdnshostresolver1: on
+                    memory: '512'
+                setextradata:
+                    VBoxInternal2/SharedFoldersEnableSymlinksCreate/v-root: 1
+        provision:
+            puppet:
+                manifests_path: puppet/manifests
+                options:
+                    - --verbose
+                    - '--hiera_config /vagrant/hiera.yaml'
+                    - '--parser future'
+        synced_folder:
+            HIImx0Gtx7qh:
+                id: vagrant-root
+                source: ./
+                target: /var/www
+                nfs: 'false'
+        usable_port_range: 2200..2250
+    ssh:
+        host: null
+        port: null
+        private_key_path: null
+        username: vagrant
+        guest_port: null
+        keep_alive: true
+        forward_agent: false
+        forward_x11: false
+        shell: 'bash -l'
+    vagrant:
+        host: ':detect'
+server:
+    packages:
+        - vim
+        - git
+    dot_files:
+        -
+            bash_aliases: null
+    _prevent_empty: ''
+apache:
+    modules:
+        - php
+        - rewrite
+    vhosts:
+        p2L90fz1gh9n:
+            servername: ci-exercise.dev
+            docroot: /var/www/ci-exercise
+            port: '80'
+            override:
+                - All
+    user: www-data
+    group: www-data
+    default_vhost: true
+    mpm_module: prefork
+php:
+    version: '55'
+    composer: '1'
+    modules:
+        php:
+            - cli
+            - intl
+            - mcrypt
+        pear: {  }
+        pecl:
+            - pecl_http
+    ini:
+        display_errors: On
+        error_reporting: '-1'
+        session.save_path: /var/lib/php/session
+    timezone: America/Chicago
+xdebug:
+    install: '1'
+    settings:
+        xdebug.default_enable: '1'
+        xdebug.remote_autostart: '0'
+        xdebug.remote_connect_back: '1'
+        xdebug.remote_enable: '1'
+        xdebug.remote_handler: dbgp
+        xdebug.remote_port: '9000'
+mysql:
+    root_password: password
+    phpmyadmin: '1'
+    databases:
+        n4traTzo68QO:
+            grant:
+                - ALL
+            name: ci_exercise
+            host: localhost
+            user: ci
+            password: password
+            sql_file: ''
+
