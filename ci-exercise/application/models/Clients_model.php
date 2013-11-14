@@ -194,14 +194,14 @@ class Clients_model extends CI_Model
     }
 
     /**
-     * Calculates the number of days between two dates, return 0 if <
+     * Calculates the number of days between two dates
      *
      * @param string $date
      * @return int
      */
     protected function calculateStartDate($date)
     {
-        $date_a = new DateTime("now");
+        $date_a = new DateTime("00:00:00");
         $date_b = new DateTime($date);
 
         $interval = $date_a->diff($date_b);
