@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * Controller responsible for rendering and passing campaign records to the View
+ *
+ * Class ShowRecords
+ */
 class ShowRecords extends CI_Controller
 {
     protected $data = [];

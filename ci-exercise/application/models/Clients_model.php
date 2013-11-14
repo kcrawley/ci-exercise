@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Handles all things related to the database for this application as well as rendering custom
+ * sections of some page views. This wasn't abstracted out to multiple Models, well, because this isn't
+ * that big of an App.
+ *
+ * Class Clients_model
+ */
 class Clients_model extends CI_Model
 {
     function __construct()
@@ -16,7 +23,7 @@ class Clients_model extends CI_Model
     {
         $query = $this->db->get('brand_options');
 
-        return ($brandNames = $this->extractNames($query)) ? $brandNames : false;
+        return $this->extractNames($query);
     }
 
     /**
@@ -42,7 +49,7 @@ class Clients_model extends CI_Model
     {
         $query = $this->db->get('campaign_types');
 
-        return ($campaignTypes = $this->extractNames($query)) ? $campaignTypes : false;
+        return $this->extractNames($query);
     }
 
     /**
@@ -71,12 +78,11 @@ class Clients_model extends CI_Model
     /**
      * Stores the main form record and creates associations
      *
-     * @param array $input
      * @return bool
      */
-    public function createCampaignRecord(Array $input)
+    public function createCampaignRecord()
     {
-        $campaignRecord = $this->db->insert('campaigns', [
+        $this->db->insert('campaigns', [
             'client_contacts_id'    => $this->input->post('client_contacts_id'),
             'brand_options_id'      => $this->input->post('brand_options_id'),
             'client_names_id'       => $this->input->post('client_names_id'),
@@ -147,7 +153,7 @@ class Clients_model extends CI_Model
     /**
      * Generates table rows for use with the records view
      *
-     * @return array
+     * @return string
      */
     public function generateCampaignTable()
     {
@@ -190,7 +196,7 @@ class Clients_model extends CI_Model
     /**
      * Calculates the number of days between two dates, return 0 if <
      *
-     * @param $date
+     * @param string $date
      * @return int
      */
     protected function calculateStartDate($date)
@@ -224,7 +230,7 @@ class Clients_model extends CI_Model
     /**
      * Returns the associated relations between client_names and client_contacts
      *
-     * @param $id
+     * @param int $id
      * @return array
      */
     protected function getAssociatedContacts($id)
@@ -252,7 +258,7 @@ class Clients_model extends CI_Model
     /**
      * Simple method to extract id/name fields from database queries which are used to pass data to the view
      *
-     * @param $query
+     * @param CI_Model $query
      * @return array|bool
      */
     protected function extractNames($query)
@@ -271,4 +277,4 @@ class Clients_model extends CI_Model
 
         return ($nameRecords) ? $nameRecords : false;
     }
-} 
+}

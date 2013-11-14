@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * Controller responsible for rendering and processing data originating from the Modal route.
+ *
+ * Class Campaignmodal
+ */
 class Campaignmodal extends CI_Controller
 {
     protected $formFields = [
