@@ -27,7 +27,7 @@
     <div class="container">
         <h1>Welcome!</h1>
         <p>CodeIgniter it is!</p>
-        <p><a id="learnMore" class="btn btn-primary btn-lg" role="button">View Records &raquo;</a></p>
+        <p><a href="/index.php/showrecords" id="learnMore" class="btn btn-primary btn-lg" role="button">View Records &raquo;</a></p>
         <p><?= validation_errors(); ?></p>
         <p><?= $message ?></p>
     </div>

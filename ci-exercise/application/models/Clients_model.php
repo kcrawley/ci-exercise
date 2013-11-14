@@ -145,6 +145,83 @@ class Clients_model extends CI_Model
     }
 
     /**
+     * Generates table rows for use with the records view
+     *
+     * @return array
+     */
+    public function generateCampaignTable()
+    {
+        $tableData = [];
+
+        $query = $this->db->select('client_names.name as client_name, client_contacts.name as contact_name,
+        campaigns.id, brand_options.name as brand_name, campaign_name, start_date, notes')->from('campaigns')->
+        join('brand_options', 'brand_options.id = campaigns.brand_options_id')->
+        join('client_names', 'client_names.id = campaigns.client_names_id')->
+        join('client_contacts', 'client_contacts.id = campaigns.client_contacts_id')->get();
+
+        if ($query) {
+            $results = $query->result_object();
+
+            if (count($results)) {
+                foreach ($results as $row) {
+                    $tableData[] = sprintf("
+                    <tr>
+                        <td>%s</td>
+                        <td>%s</td>
+                        <td>%s</td>
+                        <td>%s</td>
+                        <td>%s</td>
+                        <td>%s days</td>
+                    </tr>",
+                        $row->campaign_name,
+                        $row->client_name,
+                        $row->contact_name,
+                        $this->getAssociatedTypesCount($row->id),
+                        $row->brand_name,
+                        $this->calculateStartDate($row->start_date)
+                    );
+                }
+            }
+        }
+
+        return implode('', $tableData);
+    }
+
+    /**
+     * Calculates the number of days between two dates, return 0 if <
+     *
+     * @param $date
+     * @return int
+     */
+    protected function calculateStartDate($date)
+    {
+        $date_a = new DateTime("now");
+        $date_b = new DateTime($date);
+
+        $interval = $date_a->diff($date_b);
+        $numeric = $interval->format('%a');
+
+        if ($numeric > 0) {
+            return $numeric;
+        } else {
+            return 0;
+        }
+    }
+
+    /**
+     * Fetches the number of Campaigns Types associated with a campaign record
+     *
+     * @param int $id
+     * @return int
+     */
+    protected function getAssociatedTypesCount($id)
+    {
+        $query = $this->db->get_where('campaigns_to_campaign_types', ['campaigns_id' => $id]);
+
+        return $query->num_rows();
+    }
+
+    /**
      * Returns the associated relations between client_names and client_contacts
      *
      * @param $id
