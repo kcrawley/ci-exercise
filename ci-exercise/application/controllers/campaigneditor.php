@@ -69,7 +69,7 @@ class Campaigneditor extends CI_Controller {
         $rules = [
             [
                 'field'  => 'client_names_id',
-                'label' => 'Client Name',
+                'label' => 'Client',
                 'rules' => 'required|greater_than[0]'
             ],
             [
@@ -84,7 +84,7 @@ class Campaigneditor extends CI_Controller {
             ],
             [
                 'field'  => 'campaign_types_id[]',
-                'label' => 'Campaign Type',
+                'label' => 'Campaign Types',
                 'rules' => 'required'
             ],
             [
@@ -105,6 +105,7 @@ class Campaigneditor extends CI_Controller {
         ];
 
         $this->form_validation->set_rules($rules);
+        $this->form_validation->set_message('greater_than', 'The %s field is required.');
 
         if ($this->form_validation->run() === false) {
             // set_value seems to barf when handling array values, so i did this instead
