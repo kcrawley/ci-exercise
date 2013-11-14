@@ -27,17 +27,19 @@
     <div class="container">
         <h1>Welcome!</h1>
         <p>CodeIgniter it is!</p>
-        <p><a id="learnMore" class="btn btn-primary btn-lg" role="button">Learn more &raquo;</a></p>
+        <p><a id="learnMore" class="btn btn-primary btn-lg" role="button">View Records &raquo;</a></p>
+        <p><?= validation_errors(); ?></p>
+        <p><?= $message ?></p>
     </div>
 </div>
 
 <div class="container">
-    <?= form_open('campaign/create') ?>
+    <?= form_open('/campaigneditor/create') ?>
     <div class="row">
         <div class="col-md-4">
             <h2>Client</h2>
             <div class="col-md-8">
-                <?= form_dropdown('client_names_id', $client_names, $client_names_id, 'class="form-control"') ?>
+                <?= form_dropdown('client_names_id', $client_names, set_value('client_names_id', $client_names_id), 'class="form-control"') ?>
             </div>
             <div class="col-md-4">
                 <button id="client" type="button" class="addNewModal client-primary btn btn-primary">Add</button>
@@ -46,7 +48,7 @@
         <div class="col-md-4">
             <h2>Client Contact</h2>
             <div class="col-md-8">
-                <?= form_dropdown('client_contacts_id', $client_contacts, $client_contacts_id, 'class="form-control"') ?>
+                <?= form_dropdown('client_contacts_id', $client_contacts, set_value('client_contacts_id'), 'class="form-control"') ?>
             </div>
             <div class="col-md-4">
                 <button id="contact" type="button" class="addNewModal client-primary btn btn-primary">Add</button>
@@ -55,7 +57,7 @@
         <div class="col-md-4">
             <h2>Brand</h2>
             <div class="col-md-8">
-                <?= form_dropdown('brand_options_id', $brand_options, $brand_options_id, 'class="form-control"') ?>
+                <?= form_dropdown('brand_options_id', $brand_options, set_value('brand_options_id'), 'class="form-control"') ?>
             </div>
             <div class="col-md-4">
                 <button id="brand" type="button" class="addNewModal client-primary btn btn-primary">Add</button>
@@ -66,7 +68,7 @@
         <div class="col-md-4">
             <h2>Campaign Types</h2>
             <div class="col-md-8">
-                <?= form_multiselect('campaign_types_id', $campaign_types, $campaign_types_id, 'class="form-control"') ?>
+                <?= form_multiselect('campaign_types_id[]', $campaign_types, $campaign_types_ids, 'class="form-control"') ?>
             </div>
         </div>
         <div class="col-md-8">
@@ -75,11 +77,11 @@
                     <label for="inputCampaignName" class="col-sm-3 control-label">Campaign Name</label>
                     <div class="col-sm-9">
                         <?= form_input([
-                            'name' => 'name',
+                            'name' => 'campaign_name',
                             'class' => 'form-control',
                             'id' => 'inputCampaignName',
                             'placeholder' => 'Campaign Name',
-                            'value' => $campaign_name
+                            'value' => set_value('campaign_name')
                         ]); ?>
                     </div>
                 </div>
@@ -91,14 +93,14 @@
                             'class' => 'form-control',
                             'id'    => 'inputCampaignNotes',
                             'rows'  => 5,
-                            'value' => $notes
+                            'value' => set_value('notes')
                         ]); ?>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="inputStartDate" class="col-sm-3 control-label">Start Date</label>
                     <div class="col-sm-9">
-                        <input type="date" name="start_date" class="form-control" id="inputStartDate" value=""/>
+                        <input type="date" name="start_date" class="form-control" id="inputStartDate" value="<?= set_value('start_date') ?>"/>
                     </div>
                 </div>
                 <div class="form-group">
