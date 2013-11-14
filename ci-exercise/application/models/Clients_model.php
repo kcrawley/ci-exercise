@@ -69,6 +69,39 @@ class Clients_model extends CI_Model
     }
 
     /**
+     * Stores the main form record and creates associations
+     *
+     * @param array $input
+     * @return bool
+     */
+    public function createCampaignRecord(Array $input)
+    {
+        $campaignRecord = $this->db->insert('campaigns', [
+            'client_contacts_id'    => $this->input->post('client_contacts_id'),
+            'brand_options_id'      => $this->input->post('brand_options_id'),
+            'client_names_id'       => $this->input->post('client_names_id'),
+            'campaign_name'         => $this->input->post('campaign_name'),
+            'start_date'            => date('Y-m-d 00:00:00', strtotime($this->input->post('start_date'))),
+            'notes'                 => $this->input->post('notes')
+        ]);
+
+        $campaigns_id = $this->db->insert_id();
+
+        if ($campaigns_id) {
+            foreach($this->input->post('campaign_types_id') as $campaign_type) {
+                $this->db->insert('campaigns_to_campaign_types', [
+                    'campaigns_id'      => $campaigns_id,
+                    'campaign_types_id' => $campaign_type
+                ]);
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * Determines what and where to save Name and any associated data
      *
      * @param array $input
